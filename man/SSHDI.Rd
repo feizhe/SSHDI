@@ -7,11 +7,21 @@ SSHDI
 \description{
 Fit SSHDI for high dimensional estimation and inference}
 \usage{
-SSHDI(x)
+SSHDI(xmat,yvec,family = "gaussian",B=500)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{xmat}{ Design matrix (no intercept).
+%%     ~~Describe \code{x} here~~
+}
+  \item{yvec}{ Response variable.
+%%     ~~Describe \code{x} here~~
+}
+  \item{family}{ family from c("gaussian","poisson", "multinomial",
+  "cox", "mgaussian").
+%%     ~~Describe \code{x} here~~
+}
+  \item{B}{ Number of re-samples. Recommend \code{B} equals sample size, or similar.
 %%     ~~Describe \code{x} here~~
 }
 }
@@ -21,14 +31,20 @@ SSHDI(x)
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
+  \item{int }{Intercept estimator.}
+  \item{ss.beta }{Coefficient vector.}
+  \item{sd}{Standard errors of the coefficients.}
+  \item{p}{Individual p-values for each predictor.}
+  \item{sel.freq}{Selection frequency for each predictor based on \code{B} re-samples.}
+  \item{nzero}{Number of significant predictors after Bonferroni correction.}
 %% ...
 }
 \references{
+https://arxiv.org/abs/1903.04408
 %% ~put references to the literature/web site here ~
 }
 \author{
+Zhe Fei
 %%  ~~who you are~~
 }
 \note{
