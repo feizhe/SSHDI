@@ -107,11 +107,11 @@ SSHDI<-function(xmat,yvec,family = "gaussian",B=500){
   lam0<-l0$lambda.1se
 
   print("running...")
-  no_cores <- detectCores() - 1
-  cl <- makeCluster(no_cores)
-  registerDoParallel(cl)
+  no_cores <- detectCores() - 2
+  ## cl <- makeCluster(no_cores)
+  registerDoParallel(cores = no_cores)
   fit1<- foreach(i = 1:B,.packages=c("MASS","glmnet")) %dopar% SPARE(xmat,yvec,family = family,p0 = 9)
-  stopCluster(cl)
+  ##stopCluster(cl)
   print("done")
   INT<-sapply(1:B,extr,fit1=fit1,pos=1)
   BETA<-sapply(1:B,extr,fit1=fit1,pos=2)
