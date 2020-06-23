@@ -37,6 +37,7 @@ SPARE<-function(xmat,yvec,family = "gaussian", prop = 1/2,p0=NA ,lam0 = NA){
 
   n = dim(xmat)[1]
   p = dim(xmat)[2]
+  if ( n != length(yvec) ) print("Lengths differ.")
   n1 = n*prop
   p0 = ifelse(is.na(p0), sqrt(p), p0)
 
