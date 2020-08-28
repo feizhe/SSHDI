@@ -21,8 +21,8 @@ est.var<- function(beta,Ycount, unbiased = TRUE){
   B = dim(Ycount)[2]
   n1 = sum(Ycount[,1])
 
-  var1 <- (n/(n-n1))^2 * sum(cov(beta,t(Ycount))^2)
-  var2 <- ifelse(unbiased, var1 - n1/(n-n1)*n/B*var(beta), var1)
+  var1 <- (n/(n-n1))^2 * sum(cov(beta,t(Ycount), use = "pairwise.complete")^2)
+  var2 <- ifelse(unbiased, var1 - n1/(n-n1)*n/B*var(beta,na.rm=T), var1)
   return(var2)
 }
 
@@ -118,12 +118,12 @@ SSHDI<-function(xmat,yvec,family = "gaussian",B=500){
   SET<-lapply(1:B,extr,fit1=fit1,pos=3)
   Ycount<-sapply(1:B,extr,fit1=fit1,pos=4)
 
-  betam<-apply(BETA,1, median)
+  betam<-apply(BETA,1, median, na.rm=T)
   vars<-apply(BETA,1,est.var,Ycount=(Ycount))
   sds <- sqrt(vars)
   pvs<-2*(1-pnorm(abs(betam)/sds))
   nzero <- (1:p)[pvs<0.05/p & !is.na(pvs)]
-  int<-median(INT)
+  int<-median(INT, na.rm=T)
 
   temptab<-table(unlist(SET))
   sel_freq<-rep(0,p)
