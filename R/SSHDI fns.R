@@ -133,3 +133,31 @@ SSHDI<-function(xmat,yvec,family = "gaussian",B=500){
                    "nzero"=nzero)
   return(returnList)
 }
+
+
+simdat <- function(n,p,xcov=c("id","ar1"),rho=0.5,b0,family=c("gaussian","binary"),
+                   int=1,err.sd=1){
+  if(xcov=="id"){
+    xmat = matrix(runif(n*p),nrow = n)
+  }
+  if(xcov=="ar1"){
+    HH <- abs(outer(1:p, 1:p, "-"))
+    sigma1 <- rho^HH
+    xmat = mvrnorm(n,rep(0,p),sigma1)
+  }
+  if(nrow(xmat)!= n | ncol(xmat)!= p) return(print("Check xcov"))
+
+  lp = xmat%*%b0
+  if(family == "gaussian"){
+    y = lp + rnorm(n,int,err.sd)
+  }
+  if(family == "binary"){
+
+    p = 1/(1+exp(-lp - int))
+    y = rbinom(n,1,prob = p)
+
+  }
+  dat = list("y"=y,"x"=xmat)
+  return(dat)
+}
+
